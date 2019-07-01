@@ -1,8 +1,11 @@
-from flask import Blueprint
+from flask import Blueprint, Response
 
 app = Blueprint('action', __name__)
 
 
 @app.route("/action")
 def hello():
-    return "This is the action.py"
+    return Response('''
+            NON-RESTRICTED AREA: Hello from action.py<br />
+            <a href="/index">RESTRICTED AREA</a><br />
+            ''')
