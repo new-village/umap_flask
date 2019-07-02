@@ -51,7 +51,7 @@ def logout():
     logout_user()
     return Response('''
     logout success!<br />
-    <a href="/login/">LOGIN</a>
+    <a href="/login/">LOGIN</a><br />
     <a href="/index">RESTRICTED AREA</a><br />
     <a href="/action">NON-RESTRICTED AREA</a><br />
     ''')
