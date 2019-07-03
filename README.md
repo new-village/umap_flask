@@ -1,10 +1,10 @@
 # UMAP
 Web Application Training
 
-# Requirements
+## Requirements
 * Docker
 
-# How to use
+## How to use
 
 1. Start project
 
