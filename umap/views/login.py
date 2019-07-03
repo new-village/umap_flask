@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response, abort, render_template, redirect
+from flask import Blueprint, request, Response, abort, render_template, redirect, url_for
 from flask_login import login_user, logout_user, login_required, UserMixin
 from collections import defaultdict
 
@@ -38,7 +38,7 @@ def login():
         if(request.form["username"] in user_check and request.form["password"] == user_check[request.form["username"]]["password"]):
             # ユーザーが存在した場合はログイン
             login_user(users.get(user_check[request.form["username"]]["id"]))
-            return redirect(request.args.get("next") or url_for("index"))
+            return redirect(request.args.get("next") or url_for("index.index"))
         else:
             return abort(401)
     else:

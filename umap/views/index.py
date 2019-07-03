@@ -1,5 +1,7 @@
-from flask import Blueprint, Response
+from flask import Blueprint, Response, render_template
 from flask_login import login_required, UserMixin
+from flask_pymongo import PyMongo
+from .base import mongo
 
 app = Blueprint('index', __name__)
 
@@ -20,9 +22,6 @@ users = {
 @app.route("/")
 @app.route("/index")
 @login_required
-def hello():
-    return Response('''
-            RESTRICTED AREA: Hello from index.py<br />
-            <a href="/action">NON-RESTRICTED AREA</a><br />
-            <a href="/logout/">LOGOUT</a><br />
-            ''')
+def index():
+    online_users = list(mongo.db.users.find())
+    return render_template("index.html", online_users=online_users)
