@@ -6,7 +6,7 @@ Web Application Training
 
 # How to use
 1. Start docker container
-'''Bash
+'''Bash:
 cd <project_dir>
 docker-compose -f "docker-compose.yml" up -d --build
 '''
