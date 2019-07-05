@@ -1,16 +1,23 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "tempate.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>タイトル</title>
-</head>
+<b-form-row id="app">
+    <b-col></b-col>
+    <b-col cols="8">
+        <h2> テスト </h2>
+        <p>{{ online_users }}</p>
 
-<body>
-    <h2> テスト </h2>
-    <p>{{ online_users }}</p>
-    <a href="/action">非制限エリア</a>
-    <a href="/logout">ログアウト</a>
-</body>
+        <b-button href="/action" variant="info">非制限エリア</b-button>
+        <b-button href="/logout" variant="danger">ログアウト</b-button>
+    </b-col>
+    <b-col></b-col>
+</b-form-row>
 
-</html>
+<script>
+    var app = new Vue({
+        el: '#app'
+    })
+</script>
+
+{% endblock %}

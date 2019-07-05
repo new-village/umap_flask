@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Required Stylesheets -->
+    <link rel="stylesheet" href="/static/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/stylesheets/bootstrap-vue.min.css">
+    <link rel="stylesheet" href="/static/stylesheets/umap-original.css">
+
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="/static/javascripts/vue.min.js"></script>
+    <script src="/static/javascripts/bootstrap-vue.min.js"></script>
+    <script src="/static/javascripts/portal-vue.umd.min.js"></script>
+
+    <!-- Page title -->
+    <title>{% block title %}{% endblock %} - UMAP</title>
+    {% endblock %}
+</head>
+
+<body class="backgroud">
+    <b-container class="bv-example-row">
+        {% block content %}{% endblock %}
+    </b-container>
+</body>
+
+</html>
