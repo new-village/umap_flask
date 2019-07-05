@@ -1,0 +1,17 @@
+.navbar-brand {
+    font-size: 25px !important;
+    font-weight: 800;
+    margin-right: 0rem !important;
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
+
+/* Background Picture */
+body.backgroud { 
+    background-image: url("../images/backgroud.jpg");
+    height: 100%; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

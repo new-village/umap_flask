@@ -46,12 +46,6 @@ def login():
 
 # ログアウトパス
 @app.route('/logout/')
-@login_required
 def logout():
     logout_user()
-    return Response('''
-    logout success!<br />
-    <a href="/login/">LOGIN</a><br />
-    <a href="/index">RESTRICTED AREA</a><br />
-    <a href="/action">NON-RESTRICTED AREA</a><br />
-    ''')
+    return redirect(url_for("index.index"))
