@@ -40,10 +40,9 @@ def unauthorized_callback():
     return redirect('/login?next=' + request.path)
 
 
-@app.route("/sample")
-@login_required
-def hello():
-    return "Hello from index.py"
+@app.route("/favicon.ico")
+def favicon():
+    return app.send_static_file("images/favicon.ico")
 
 
 if __name__ == "__main__":
