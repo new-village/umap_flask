@@ -2,8 +2,8 @@ from flask import Flask, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_required
 
 from collections import defaultdict
-from views import index, action, login
-from views.base import mongo
+from views import index, login
+from views.common import mongo
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -13,7 +13,6 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/admin"
 mongo.init_app(app)
 
 app.register_blueprint(index.app)
-app.register_blueprint(action.app)
 app.register_blueprint(login.app)
 
 

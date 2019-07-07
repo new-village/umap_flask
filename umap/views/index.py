@@ -1,7 +1,7 @@
 from flask import Blueprint, Response, render_template
 from flask_login import login_required, UserMixin
 from flask_pymongo import PyMongo
-from .base import mongo
+from .common import mongo
 
 app = Blueprint('index', __name__)
 

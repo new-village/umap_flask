@@ -1,16 +1,15 @@
 <div id="header">
     <!-- Image and text -->
     <b-navbar variant="dark" type="dark">
-        <b-col></b-col>
-        <b-col cols="8" class="text-center">
+        <b-col class="text-left">
             <b-navbar-brand href="#" tag="h1">
                 <!-- <img src="static/images/logo.png" class="d-inline-block align-top" alt="logo"> -->
                 UMAP
             </b-navbar-brand>
         </b-col>
-        <b-col>
+        <b-col class="text-right">
             {% if current_user.is_authenticated %}
-            <b-button href="/logout" variant="outline-info">ログアウト</b-button>
+            <b-button href="/logout" size="sm" variant="outline-info">ログアウト</b-button>
             {% endif %}
         </b-col>
     </b-navbar>

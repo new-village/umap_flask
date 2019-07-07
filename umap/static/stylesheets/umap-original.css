@@ -15,3 +15,9 @@ body.backgroud {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+div.content {
+    margin-top: 1rem;
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+}

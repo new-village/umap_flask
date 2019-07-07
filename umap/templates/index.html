@@ -2,21 +2,35 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<b-form-row id="app">
-    <b-col></b-col>
-    <b-col cols="8">
-        <h2> テスト </h2>
-        <p>{{ online_users }}</p>
+<!-- Our application root element -->
+<b-row id="index" align-h="center">
+    <b-col md="8">
+        <b-card title="UMA Prediction" class="text-center">
+            <b-card-text>
+                全自動競馬予想ソリューション。データの収集、加工、モデルの適用、結果の表示までを自動で実行。
+            </b-card-text>
 
-        <b-button href="/action" variant="info">非制限エリア</b-button>
-        <b-button href="/logout" variant="danger">ログアウト</b-button>
+            <b-form-group horizontal :label-cols="4" description="Let us know your name." label="Enter your name">
+                <b-form-input v-model.trim="name"></b-form-input>
+            </b-form-group>
+
+            <b-alert variant="success" :show="showAlert">Hello {{ name }}</b-alert>
+        </b-card>
     </b-col>
-    <b-col></b-col>
-</b-form-row>
+</b-row>
 
+<!-- Start running your app -->
 <script>
-    var app = new Vue({
-        el: '#app'
+    window.app = new Vue({
+        el: '#index',
+        data: {
+            name: ''
+        },
+        computed: {
+            showAlert() {
+                return this.name.length > 4 ? true : false
+            }
+        }
     })
 </script>
 
