@@ -14,9 +14,10 @@
     <link rel="stylesheet" href="/static/stylesheets/umap-original.css">
 
     <!-- Required scripts -->
-    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <!-- <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script> -->
     <script src="/static/javascripts/vue.min.js"></script>
     <script src="/static/javascripts/bootstrap-vue.min.js"></script>
+    <script src="/static/javascripts/axios.min.js"></script>
     <script src="/static/javascripts/portal-vue.umd.min.js"></script>
 
     <!-- Page title -->
@@ -25,7 +26,9 @@
 </head>
 
 <body class="backgroud">
+    {% if current_user.is_authenticated %}
     {% include '_header.html' %}
+    {% endif %}
     <div class="content">
         {% block content %}{% endblock %}
     </div>

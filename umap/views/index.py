@@ -9,13 +9,14 @@ app = Blueprint('index', __name__)
 class User(UserMixin):
     def __init__(self, id, name, password):
         self.id = id
-        self.name = name
+        self.email = name
         self.password = password
 
 
+# ログイン用ユーザー作成
 users = {
-    1: User(1, "user01", "password"),
-    2: User(2, "user02", "password")
+    1: User(1, "sample@gmail.com", "password"),
+    2: User(2, "test@gmail.com", "password")
 }
 
 
