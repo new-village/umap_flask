@@ -24,5 +24,8 @@ users = {
 @app.route("/index")
 @login_required
 def index():
-    online_users = list(mongo.db.users.find())
+    key = {"email": "sample@gmail.com"}
+    user = {"email": "sample@gmail.com", "password": "password"}
+    result = mongo.db.users.update(key, user, upsert=True)
+    online_users = [d for d in mongo.db.users.find()]
     return render_template("index.html", online_users=online_users)

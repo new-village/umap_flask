@@ -9,7 +9,7 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = "secret"
-app.config["MONGO_URI"] = "mongodb://localhost:27017/admin"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/umap"
 mongo.init_app(app)
 
 app.register_blueprint(index.app)

@@ -15,6 +15,10 @@
             </b-form-group>
 
             <b-alert variant="success" :show="showAlert">Hello {{ name }}</b-alert>
+
+            {% for user in online_users %}
+            <div>{{ user["email"] }}</div>
+            {% endfor %}
         </b-card>
     </b-col>
 </b-row>
