@@ -2,22 +2,9 @@ from flask import Blueprint, Response, render_template
 from flask_login import login_required, UserMixin
 from flask_pymongo import PyMongo
 from .common import mongo
+from models import User
 
 app = Blueprint('index', __name__)
-
-
-class User(UserMixin):
-    def __init__(self, id, name, password):
-        self.id = id
-        self.email = name
-        self.password = password
-
-
-# ログイン用ユーザー作成
-users = {
-    1: User(1, "sample@gmail.com", "password"),
-    2: User(2, "test@gmail.com", "password")
-}
 
 
 @app.route("/")

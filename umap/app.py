@@ -1,9 +1,10 @@
 from flask import Flask, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_required
-
+from flask_pymongo import PyMongo, ObjectId
 from collections import defaultdict
 from views import index, login
 from views.common import mongo
+from models import User
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -16,22 +17,10 @@ app.register_blueprint(index.app)
 app.register_blueprint(login.app)
 
 
-class User(UserMixin):
-    def __init__(self, id, name, password):
-        self.id = id
-        self.name = name
-        self.password = password
-
-
-users = {
-    1: User(1, "user01", "password"),
-    2: User(2, "user02", "password")
-}
-
-
 @login_manager.user_loader
 def load_user(user_id):
-    return users.get(int(user_id))
+    u = mongo.db.users.find_one({"_id": ObjectId(user_id)})
+    return User(u["_id"], u["email"], u["password"])
 
 
 @login_manager.unauthorized_handler
