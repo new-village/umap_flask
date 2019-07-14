@@ -6,7 +6,7 @@ Web Application Training
 
 ## How to use
 
-1. Set Parameters
+1. Set Parameters  
 Rename environment file and Overwrite parameters
 ```bash:
 $ cd <project_dir>
