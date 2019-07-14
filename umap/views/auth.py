@@ -9,17 +9,21 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login/', methods=["GET", "POST"])
 def login():
-    if(request.method == "POST"):
+    if (request.method == "POST"):
         # Valid User/Password
-        u = mongo.db.users.find_one({"email": request.form["email"]})
-        if u and u["password"] == request.form["password"]:
-            user = User(u["_id"], u["email"], u["password"])
+        user = User.search(request.form["email"])
+        if user and user.valid_password(request.form["password"]):
             login_user(user)
             return redirect(request.args.get("next") or url_for("index.main"))
         else:
             return abort(401)
     else:
-        return render_template("login.html")
+        # If a user is not exist, render create user page
+        if mongo.db.users.count() == 0:
+            mode = "/create/"
+        else:
+            mode = "/login/"
+        return render_template("login.html", mode=mode)
 
 
 @auth.route('/logout/')
@@ -28,10 +32,20 @@ def logout():
     return redirect(url_for("index.main"))
 
 
+@auth.route('/create/', methods=["POST"])
+def create():
+    user = User(request.form["email"], request.form["password"])
+    if user.save():
+        login_user(user)
+        return redirect(request.args.get("next") or url_for("index.main"))
+    else:
+        return abort(401)
+
+
 @login_manager.user_loader
 def load_user(user_id):
-    u = mongo.db.users.find_one({"_id": ObjectId(user_id)})
-    return User(u["_id"], u["email"], u["password"])
+    u = mongo.db.users.find_one({"_id": user_id})
+    return User(u["_id"], u["password"])
 
 
 @login_manager.unauthorized_handler

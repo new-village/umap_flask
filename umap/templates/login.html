@@ -6,10 +6,15 @@
 <b-col id="login" class="float-center text-center" lg="4" md="8" cols="10">
     <b-card class="login">
         <b-button class="logo navbar-brand" variant="dark">UMAP</b-button>
-        <b-form method="post">
+        <b-form action="{{ mode }}" method="post">
             <b-form-input type="email" placeholder="メールアドレス" name="email" class="margin-1"></b-form-input>
             <b-form-input type="password" placeholder="パスワード" name="password" class="margin-1"></b-form-input>
-            <b-button type="submit" block variant="success" class="margin-1">ログイン</b-button>
+            {% if mode=="/create/" %}
+            <b-form-input type="password" placeholder="パスワード（確認）" name="valid" class="margin-1"></b-form-input>
+            {% endif %}
+            <b-button type="submit" block variant="success" class="margin-1">
+                {% if mode=="/create/" %} 管理者ユーザー作成 {% else %} ログイン {% endif %}
+            </b-button>
         </b-form>
     </b-card>
 </b-col>

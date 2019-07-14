@@ -1,6 +1,7 @@
 from flask import current_app, Blueprint, render_template
 from flask_login import login_required
 from app import mongo, login_manager
+from models import User
 
 
 index = Blueprint('index', __name__)
@@ -11,9 +12,10 @@ index = Blueprint('index', __name__)
 @login_required
 def main():
     key = {"email": "sample@gmail.com"}
-    user = {"email": "sample@gmail.com", "password": "password"}
-    result = mongo.db.users.update(key, user, upsert=True)
-    return render_template("index.html", user=mongo.db.users.find_one(key))
+    # user = {"email": "sample@gmail.com", "password": "password"}
+    # result = mongo.db.users.update(key, user, upsert=True)
+    user_info = User.search("kazuki.niimura@gmail.com")
+    return render_template("index.html", user=user_info)
 
 
 @index.route("/favicon.ico")
