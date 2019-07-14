@@ -11,7 +11,7 @@ auth = Blueprint('auth', __name__)
 def login():
     if (request.method == "POST"):
         # Valid User/Password
-        user = User.search(request.form["email"])
+        user = User.search(request.form["email"].lower())
         if user and user.valid_password(request.form["password"]):
             login_user(user)
             return redirect(request.args.get("next") or url_for("index.main"))
