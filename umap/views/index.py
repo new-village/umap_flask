@@ -1,18 +1,21 @@
-from flask import Blueprint, Response, render_template
-from flask_login import login_required, UserMixin
-from flask_pymongo import PyMongo
-from .common import mongo
-from models import User
-
-app = Blueprint('index', __name__)
+from flask import current_app, Blueprint, render_template
+from flask_login import login_required
+from app import mongo, login_manager
 
 
-@app.route("/")
-@app.route("/index")
+index = Blueprint('index', __name__)
+
+
+@index.route("/")
+@index.route("/index")
 @login_required
-def index():
+def main():
     key = {"email": "sample@gmail.com"}
     user = {"email": "sample@gmail.com", "password": "password"}
     result = mongo.db.users.update(key, user, upsert=True)
-    online_users = [d for d in mongo.db.users.find()]
-    return render_template("index.html", online_users=online_users)
+    return render_template("index.html", user=mongo.db.users.find_one(key))
+
+
+@index.route("/favicon.ico")
+def favicon():
+    return current_app.send_static_file("images/favicon.ico")
