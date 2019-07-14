@@ -6,7 +6,15 @@ Web Application Training
 
 ## How to use
 
-1. Start project
+1. Set Parameters
+Rename environment file and Overwrite parameters
+```bash:
+$ cd <project_dir>
+$ cp .env.sample .env
+$ vim .env
+```
+
+2. Start Containers
 
 ```bash:
 $ cd <project_dir>
@@ -15,4 +23,10 @@ $ cd /umap
 $ flask run
 ```
 
-2. Access to http://localhost:5000/
+3. Start Application
+```bash:
+$ cd <project_dir>/umap
+$ flask run
+```
+
+4. Access to http://localhost:5000/

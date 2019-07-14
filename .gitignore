@@ -109,3 +109,6 @@ venv.bak/
 # Database
 .mongo/
 
+# Setting
+!.env.sample
+.env

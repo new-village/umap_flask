@@ -6,8 +6,10 @@ from flask_pymongo import PyMongo
 def launch_app():
     # Load Flask Application
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "secret"
-    app.config["MONGO_URI"] = "mongodb://localhost:27017/umap"
+    app.config.from_pyfile("../.env")
+
+    # app.config["SECRET_KEY"] = "secret"
+    # app.config["MONGO_URI"] = "mongodb://localhost:27017/umap"
 
     # Load Mongo DB
     login_manager.init_app(app)
