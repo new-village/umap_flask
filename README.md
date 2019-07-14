@@ -19,8 +19,6 @@ $ vim .env
 ```bash:
 $ cd <project_dir>
 $ docker-compose -f "docker-compose.yml" up -d --build
-$ cd /umap
-$ flask run
 ```
 
 3. Start Application
