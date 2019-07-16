@@ -1,0 +1,66 @@
+{% extends "tempate.html" %}
+{% block title %}レース管理{% endblock %}
+{% block content %}
+
+<!-- Our application root element -->
+<b-row id="race_all" align-h="center" class="margin-1">
+    <b-col md="8">
+        <b-card title="管理コンソール" class="">
+            <b-alert :show="dismissCount" dismissible variant="info" @dismissed="dismissCount=0"
+                @dismiss-count-down="countChanged">
+                登録に成功しました
+            </b-alert>
+            <b-input-group prepend="レース情報取得">
+                <b-form-input v-model="race_id" type="text" placeholder="レースID"></b-form-input>
+                <b-input-group-append>
+                    <b-button variant="success" type="submit" @click="exec">Get</b-button>
+                </b-input-group-append>
+            </b-input-group>
+        </b-card>
+    </b-col>
+</b-row>
+
+<!-- Start running your app -->
+<script>
+    window.app = new Vue({
+        el: '#race_all',
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                race_id: '',
+                info: null,
+                dismissSecs: 5,
+                dismissCount: 0
+            }
+        },
+        methods: {
+            exec: async function () {
+                await this.get();
+                await this.post();
+                if (this.info.status == "200") {
+                    this.dismissCount = this.dismissSecs
+                } else {
+                    console.log(this.info)
+                }
+            },
+            get: async function () {
+                await axios({
+                    method: 'GET',
+                    url: '/race/' + this.race_id
+                }).then(response => (this.info = response.data))
+            },
+            post: async function () {
+                await axios({
+                    method: 'POST',
+                    url: '/race/',
+                    data: this.info
+                }).then(response => (this.info = response))
+            },
+            countChanged(dismissCount) {
+                this.dismissCount = dismissCount
+            }
+        }
+    })
+</script>
+
+{% endblock %}

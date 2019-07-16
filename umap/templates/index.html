@@ -4,20 +4,31 @@
 
 <!-- Our application root element -->
 <b-row id="index" align-h="center" class="margin-1">
-    <b-col md="8">
+    <b-col md="6">
         <b-card title="UMA Prediction" class="text-center">
             <b-card-text>
                 全自動競馬予想ソリューション。データの収集、加工、モデルの適用、結果の表示までを自動で実行。
             </b-card-text>
-
-            <b-form-group :label-cols="4" description="Let us know your name." label="Enter your name"
-                class="label-cols">
-                <b-form-input v-model.trim="name"></b-form-input>
-            </b-form-group>
-
-            <b-alert variant="success" :show="showAlert">Hello {{ name }}</b-alert>
-
-            <div>{{ user["email"] }}</div>
+        </b-card>
+    </b-col>
+    <b-col md="4">
+        <b-card title="管理コンソール" class="">
+            <b-alert :show="dismissCount" dismissible variant="info" @dismissed="dismissCount=0"
+                @dismiss-count-down="countChanged">
+                登録に成功しました
+            </b-alert>
+            <b-input-group prepend="レース情報取得">
+                <b-form-input v-model="race_id" type="text" placeholder="レースID"></b-form-input>
+                <b-input-group-append>
+                    <b-button variant="success" type="submit" @click="race">Get</b-button>
+                </b-input-group-append>
+            </b-input-group>
+            <b-input-group prepend="開催情報取得">
+                <b-form-input v-model="year_month" type="text" placeholder="開催年月"></b-form-input>
+                <b-input-group-append>
+                    <b-button variant="success" type="submit" @click="cal">Get</b-button>
+                </b-input-group-append>
+            </b-input-group>
         </b-card>
     </b-col>
 </b-row>
@@ -26,12 +37,63 @@
 <script>
     window.app = new Vue({
         el: '#index',
-        data: {
-            name: ''
+        delimiters: ["[[", "]]"],
+        data() {
+            return {
+                race_id: '',
+                year_month: '',
+                info: null,
+                dismissSecs: 5,
+                dismissCount: 0
+            }
         },
-        computed: {
-            showAlert() {
-                return this.name.length > 4 ? true : false
+        methods: {
+            race: async function () {
+                await this.race_get();
+                await this.race_post();
+                if (this.info.status == "200") {
+                    this.dismissCount = this.dismissSecs
+                } else {
+                    console.log(this.info)
+                }
+            },
+            race_get: async function () {
+                await axios({
+                    method: 'GET',
+                    url: '/race/' + this.race_id
+                }).then(response => (this.info = response.data))
+            },
+            race_post: async function () {
+                await axios({
+                    method: 'POST',
+                    url: '/race/',
+                    data: this.info
+                }).then(response => (this.info = response))
+            },
+            cal: async function () {
+                await this.cal_get();
+                await this.cal_post();
+                if (this.info.status == "200") {
+                    this.dismissCount = this.dismissSecs
+                } else {
+                    console.log(this.info)
+                }
+            },
+            cal_get: async function () {
+                await axios({
+                    method: 'GET',
+                    url: '/race_calendar/' + this.year_month
+                }).then(response => (this.info = response.data))
+            },
+            cal_post: async function () {
+                await axios({
+                    method: 'POST',
+                    url: '/race_calendar/',
+                    data: this.info
+                }).then(response => (this.info = response))
+            },
+            countChanged(dismissCount) {
+                this.dismissCount = dismissCount
             }
         }
     })

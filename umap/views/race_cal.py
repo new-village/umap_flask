@@ -1,5 +1,6 @@
 import datetime
-from flask import Blueprint, jsonify
+import json
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app import mongo, login_manager
 from .common import *
@@ -16,7 +17,7 @@ def main():
     else:
         # Convert JSON to DICT
         data = json.loads(request.data)
-        mongo.db.race_calendar.update({"_id": data["_id"]}, data, upsert=True)
+        mongo.db.race_calendar.insert(data)
     return jsonify({"message": "SUCCESS"}), 200
 
 
