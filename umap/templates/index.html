@@ -2,36 +2,48 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<!-- Our application root element -->
-<b-row id="index" align-h="center" class="margin-1">
-    <b-col md="6">
-        <b-card title="UMA Prediction" class="text-center">
-            <b-card-text>
-                全自動競馬予想ソリューション。データの収集、加工、モデルの適用、結果の表示までを自動で実行。
-            </b-card-text>
-        </b-card>
-    </b-col>
-    <b-col md="4">
-        <b-card title="管理コンソール" class="">
-            <b-alert :show="dismissCount" dismissible variant="info" @dismissed="dismissCount=0"
-                @dismiss-count-down="countChanged">
-                登録に成功しました
-            </b-alert>
-            <b-input-group prepend="レース情報取得">
-                <b-form-input v-model="race_id" type="text" placeholder="レースID"></b-form-input>
-                <b-input-group-append>
-                    <b-button variant="success" type="submit" @click="race">Get</b-button>
-                </b-input-group-append>
-            </b-input-group>
-            <b-input-group prepend="開催情報取得">
-                <b-form-input v-model="year_month" type="text" placeholder="開催年月"></b-form-input>
-                <b-input-group-append>
-                    <b-button variant="success" type="submit" @click="cal">Get</b-button>
-                </b-input-group-append>
-            </b-input-group>
-        </b-card>
-    </b-col>
-</b-row>
+<b-container fluid id="index">
+    <b-alert :show="dismissCount" dismissible variant="info" @dismissed="dismissCount=0"
+        @dismiss-count-down="countChanged" class="alert">
+        登録に成功しました
+    </b-alert>
+
+    <!-- Our application root element -->
+    <b-row align-h="center">
+        <!-- Listing next week holds -->
+        <b-col md="8">
+            {% for hold in holds %}
+            <b-card title="{{ hold['place_name'] }}" class="margin-1">
+                {% for i in range(12) %}
+                <b-button variant="success">{{ i + 1 }}</b-button>
+                {% endfor %}
+            </b-card>
+
+            <p>{{ hold["race_id"] }}</p>
+            {% endfor %}
+        </b-col>
+
+        <!-- Data Getter -->
+        <b-col md="4">
+            <b-card title="レース情報取得" class="margin-1">
+                <b-input-group>
+                    <b-form-input v-model="race_id" type="text" placeholder="レースID"></b-form-input>
+                    <b-input-group-append>
+                        <b-button variant="success" type="submit" @click="race">実行</b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-card>
+            <b-card title="開催情報取得" class="margin-1">
+                <b-input-group>
+                    <b-form-input v-model="year_month" type="text" placeholder="開催年月 YYYYMM"></b-form-input>
+                    <b-input-group-append>
+                        <b-button variant="success" type="submit" @click="cal">実行</b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-card>
+        </b-col>
+    </b-row>
+</b-container>
 
 <!-- Start running your app -->
 <script>

@@ -42,3 +42,6 @@ body.backgroud {
     padding: 1rem 2rem;
 }
     
+.alert {
+    position: absolute; top: 0;
+}

@@ -1,7 +1,8 @@
-import datetime
 import json
+from datetime import datetime
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
+
 from app import mongo, login_manager
 from .common import *
 
@@ -64,7 +65,7 @@ def extract_race_cal(_table, _year, _month):
             race = {}
             dy = int_fmt(cells[0].text, "(\d+)日（[日|月|火|水|木|金|土]）")
             race["_id"] = "20" + str_fmt(cells[0].a.get("href"), "\d+")
-            race["hold_date"] = datetime.datetime(yr, mo, dy).isoformat()
+            race["hold_date"] = datetime(yr, mo, dy)
             race["place_id"] = race["_id"][4:6]
             race["place_name"] = to_place_name(race["place_id"])
             race["days"] = int(race["_id"][6:8])
