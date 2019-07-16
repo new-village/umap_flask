@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required
 from app import mongo, login_manager
+from .common import *
 
-import re
 import json
-import bs4 as bs
-from requests import Session, HTTPError
+
+
 from datetime import datetime
 
 race = Blueprint('race', __name__, url_prefix='/race')
@@ -40,20 +40,6 @@ def get(race_id):
         return jsonify({"message": "There is No Entry"}), 500
 
 
-def get_soup(_url):
-    """HTML取得
-    引数で与えられたURLのHTMLを取得してBeautiful Soupクラスで返すファンクション
-    """
-    try:
-        session = Session()
-        html = session.get(_url)
-        soup = bs.BeautifulSoup(html.content, "html.parser")
-    except HTTPError as e:
-        print("HTTP error: {0}".format(e))
-        raise
-    return soup
-
-
 def race_to_json(race_id, _soup):
     """取得したレース出走情報のHTMLから辞書を作成
     netkeiba.comのレースページから情報をパースしてjson形式で返すファンクション
@@ -69,7 +55,7 @@ def race_to_json(race_id, _soup):
 
     attrs = base.find("dd").find_all("p")
     tm = str_fmt(attrs[1].string, "\d{2}:\d{2}")
-    race["course"] = str_fmt(attrs[0].string, "芝|ダ|障")
+    race["course"] = to_course_full(str_fmt(attrs[0].string, "芝|ダ|障"))
     race["distance"] = int_fmt(attrs[0].string, "\d{4}")
     race["weather"] = str_fmt(attrs[1].string, "晴|曇|小雨|雨|小雪|雪")
     race["going"] = str_fmt(attrs[1].string, "良|稍重|重|不良")
@@ -115,35 +101,3 @@ def table_to_list(_table):
             entry.append(h)
 
     return entry
-
-
-def int_fmt(_target, _reg):
-    val = check_format(_target, _reg)
-    val = int(re.sub(",", "", val)) if val is not None else 0
-
-    return val
-
-
-def float_fmt(_target, _reg):
-    val = check_format(_target, _reg)
-    val = float(re.sub(",", "", val)) if val is not None else 0
-
-    return val
-
-
-def str_fmt(_target, _reg):
-    val = check_format(_target, _reg)
-    val = str(val) if val is not None else ""
-
-    return val
-
-
-def check_format(_target, _reg):
-    # check target variables
-    fmt = re.compile(_reg)
-    if _target is not None and fmt.search(_target):
-        val = fmt.findall(_target)[0]
-    else:
-        val = None
-
-    return val
