@@ -16,7 +16,7 @@ def main():
     else:
         # Convert JSON to DICT
         data = json.loads(request.data)
-        mongo.db.races.update({"_id": data["_id"]}, data, upsert=True)
+        mongo.db.race_calendar.update({"_id": data["_id"]}, data, upsert=True)
     return jsonify({"message": "SUCCESS"}), 200
 
 
@@ -62,7 +62,6 @@ def extract_race_cal(_table, _year, _month):
         if len(cells) == 3 and cells[0].find("a") is not None:
             race = {}
             dy = int_fmt(cells[0].text, "(\d+)日（[日|月|火|水|木|金|土]）")
-            print(dy)
             race["_id"] = "20" + str_fmt(cells[0].a.get("href"), "\d+")
             race["hold_date"] = datetime.datetime(yr, mo, dy).isoformat()
             race["place_id"] = race["_id"][4:6]
