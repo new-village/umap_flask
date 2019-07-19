@@ -37,7 +37,7 @@
                 <b-input-group>
                     <b-form-input v-model="year_month" type="text" placeholder="開催年月 YYYYMM"></b-form-input>
                     <b-input-group-append>
-                        <b-button variant="success" type="submit" @click="cal">実行</b-button>
+                        <b-button variant="success" type="submit" @click="hold">実行</b-button>
                     </b-input-group-append>
                 </b-input-group>
             </b-card>
@@ -82,25 +82,25 @@
                     data: this.info
                 }).then(response => (this.info = response))
             },
-            cal: async function () {
-                await this.cal_get();
-                await this.cal_post();
+            hold: async function () {
+                await this.hold_get();
+                await this.hold_post();
                 if (this.info.status == "200") {
                     this.dismissCount = this.dismissSecs
                 } else {
                     console.log(this.info)
                 }
             },
-            cal_get: async function () {
+            hold_get: async function () {
                 await axios({
                     method: 'GET',
-                    url: '/race_calendar/' + this.year_month
+                    url: '/hold/' + this.year_month
                 }).then(response => (this.info = response.data))
             },
-            cal_post: async function () {
+            hold_post: async function () {
                 await axios({
                     method: 'POST',
-                    url: '/race_calendar/',
+                    url: '/hold/',
                     data: this.info
                 }).then(response => (this.info = response))
             },
