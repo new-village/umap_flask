@@ -1,10 +1,12 @@
 import json
 from datetime import datetime
-from flask import Blueprint, jsonify, request
+
+from flask import Blueprint, jsonify, render_template, request
 from flask_login import login_required
 
-from app import mongo, login_manager
-from .common import *
+from app import mongo
+
+from .common import check_format, get_soup, str_fmt, to_place_name
 
 hold = Blueprint('hold', __name__, url_prefix='/hold')
 
@@ -30,14 +32,14 @@ def main():
 @login_required
 def get(year_month):
     # Check Parameter Format
-    if check_format(year_month, "^\d{6}$"):
+    if check_format(year_month, r"^\d{6}$"):
         year = year_month[0:4]
         month = year_month[4:6]
     else:
         return jsonify({"message": "Invalid argument"}), 500
 
     # Create Yahoo keiba URL
-    url = "https://keiba.yahoo.co.jp/schedule/list/"+year+"/?month="+month
+    url = "https://keiba.yahoo.co.jp/schedule/list/" + year + "/?month=" + month
 
     # Check HTML File
     soup = get_soup(url)
@@ -65,8 +67,8 @@ def extract_hold(_table, _year, _month):
 
         if len(cells) == 3 and cells[0].find("a") is not None:
             hold = {}
-            dy = str_fmt(cells[0].text, "(\d+)日（[日|月|火|水|木|金|土]）").zfill(2)
-            hold["_id"] = "20" + str_fmt(cells[0].a.get("href"), "\d+")
+            dy = str_fmt(cells[0].text, r"(\d+)日（[日|月|火|水|木|金|土]）").zfill(2)
+            hold["_id"] = "20" + str_fmt(cells[0].a.get("href"), r"\d+")
             hold["hold_date"] = _year + "-" + _month + "-" + dy
             hold["place_id"] = hold["_id"][4:6]
             hold["place_name"] = to_place_name(hold["place_id"])

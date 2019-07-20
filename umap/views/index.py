@@ -1,12 +1,11 @@
-from datetime import date, datetime
+from datetime import date
 
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, current_app, render_template
 from flask_login import login_required
 from flask_pymongo import ASCENDING, DESCENDING
 
-from app import login_manager, mongo
-from models import User
+from app import mongo
 
 index = Blueprint('index', __name__)
 
