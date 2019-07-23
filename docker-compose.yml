@@ -18,3 +18,11 @@ services:
     restart: always
     ports:
       - 8081:8081
+  
+  redis:
+    image: redis:5.0-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - .umap_docker/redis/data:/data
+    restart: unless-stopped
