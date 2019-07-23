@@ -66,6 +66,8 @@ def extract_hold(_table, _year, _month):
             hold["place_name"] = to_place_name(hold["place_id"])
             hold["days"] = int(hold["_id"][6:8])
             hold["times"] = int(hold["_id"][8:10])
+            id_list = [hold["_id"] + str(i + 1).zfill(2) for i in range(12)]
+            hold["races"] = id_list
             holds.append(hold)
 
     return holds
