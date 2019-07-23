@@ -1,45 +1,37 @@
+import re
 import json
 from datetime import datetime
 
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
-
 from app import mongo
-
-from .common import check_format, get_soup, str_fmt, to_place_name
+from .common import get_soup, str_fmt, to_place_name
 
 hold = Blueprint('hold', __name__, url_prefix='/hold')
 
 
-@hold.route('/', methods=["GET", "POST"])
+@hold.route('/', methods=["POST"])
 @login_required
 def main():
-    if request.method == "GET":
-        user_info = "(ﾟ∀ﾟ)ﾗｳﾞｨ!!"
-        return render_template("race_all.html", user=user_info)
-    else:
-        # Convert JSON to DICT
-        holds = json.loads(request.data)
-        # Validate Data Types
-        for hold in holds:
-            hold["hold_date"] = datetime.strptime(
-                hold["hold_date"], "%Y-%m-%d")
-        mongo.db.holds.insert_many(holds)
+    # Convert JSON to DICT
+    holds = json.loads(request.data)
+    # Validate Data Types
+    for hold in holds:
+        hold["hold_date"] = datetime.strptime(hold["hold_date"], "%Y-%m-%d")
+        mongo.db.holds.update({"_id": hold["_id"]}, hold, upsert=True)
     return jsonify({"message": "SUCCESS"}), 200
 
 
 @hold.route('/<string:year_month>', methods=["GET"])
 @login_required
 def get(year_month):
-    # Check Parameter Format
-    if check_format(year_month, r"^\d{6}$"):
+    # Create Yahoo keiba URL from the argument
+    if re.match(r"^\d{6}$", year_month):
         year = year_month[0:4]
         month = year_month[4:6]
+        url = "https://keiba.yahoo.co.jp/schedule/list/" + year + "/?month=" + month
     else:
         return jsonify({"message": "Invalid argument"}), 500
-
-    # Create Yahoo keiba URL
-    url = "https://keiba.yahoo.co.jp/schedule/list/" + year + "/?month=" + month
 
     # Check HTML File
     soup = get_soup(url)

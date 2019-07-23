@@ -1,6 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, abort, render_template
 from flask_login import login_user, logout_user
-from flask_pymongo import ObjectId
 from app import mongo, login_manager
 from models import User
 

@@ -11,7 +11,7 @@ def get_soup(_url):
         session = Session()
         html = session.get(_url)
         soup = bs.BeautifulSoup(html.content, "html.parser")
-    except HTTPError as e:
+    except HTTPError:
         soup = None
     return soup
 
@@ -57,5 +57,5 @@ def to_place_name(place_id):
 
 def to_course_full(abbr):
     master = {"ダ": "ダート", "障": "障害", "芝": "芝"}
-    course_full = master[abbr] if abbr is not '' else 0
+    course_full = master[abbr] if abbr != '' else 0
     return course_full
